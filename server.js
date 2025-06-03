@@ -1,12 +1,11 @@
 const { createServer } = require("http");
-const { parse } = require("url");
 const next = require("next");
 const { Server } = require("socket.io");
 const jwt = require("jsonwebtoken");
 const { MongoClient, ObjectId } = require("mongodb");
 
 const dev = process.env.NODE_ENV !== "production";
-const hostname = "localhost";
+const hostname = process.env.HOST_NAME || "localhost";
 const port = process.env.PORT || 3000;
 
 const app = next({ dev, hostname, port });
