@@ -69,8 +69,7 @@ export default function ChatApp({
     // Initialize Socket.IO server
 
     const newSocket = io(
-      process.env.SOCKET_URL ||
-        "https://realtime-chatapp-server-umts.onrender.com",
+      process.env.SOCKET_URL || "http://209.38.123.107:3001",
       {
         auth: { token },
         withCredentials: true,
