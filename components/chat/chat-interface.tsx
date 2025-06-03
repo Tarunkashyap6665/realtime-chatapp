@@ -68,9 +68,17 @@ export default function ChatApp({
   const initializeSocket = () => {
     // Initialize Socket.IO server
 
-    const newSocket = io({
-      auth: { token },
-    });
+    const newSocket = io(
+      process.env.SOCKET_URL ||
+        "https://realtime-chatapp-server-umts.onrender.com",
+      {
+        auth: { token },
+        withCredentials: true,
+        reconnection: true,
+        reconnectionAttempts: 5,
+        reconnectionDelay: 1000,
+      }
+    );
 
     newSocket.on("connect", () => {
       console.log("Connected to server");
