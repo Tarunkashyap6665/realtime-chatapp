@@ -74,7 +74,7 @@ export default function MessageInput({
   };
 
   return (
-    <div className="border-t bg-white p-4">
+    <div className="border-t bg-gradient-to-bl from-blue-50 to-indigo-100 p-4">
       <form onSubmit={handleSubmit} className="flex space-x-2">
         <Input
           ref={inputRef}

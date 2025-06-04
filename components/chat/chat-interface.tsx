@@ -75,9 +75,8 @@ export default function ChatApp({
 
   const initializeSocket = () => {
     // Initialize Socket.IO server
-
     const newSocket = io(
-      process.env.SOCKET_URL || "http://209.38.123.107:3001",
+      process.env.NEXT_PUBLIC_SOCKET_URL || "http://209.38.123.107:3000",
       {
         auth: { token },
         withCredentials: true,
@@ -240,7 +239,7 @@ export default function ChatApp({
     >
       <SidebarProvider>
         <Sidebar>
-          <SidebarHeader className="p-4 border-b">
+          <SidebarHeader className="p-4 border-b bg-gradient-to-br from-blue-50 to-indigo-100">
             <div className="flex items-center justify-between">
               <div>
                 <motion.div
@@ -264,7 +263,7 @@ export default function ChatApp({
             </div>
           </SidebarHeader>
 
-          <SidebarContent>
+          <SidebarContent className="scrollbar-hide bg-gradient-to-tr from-blue-50 to-indigo-100">
             <ChatList
               chats={chats}
               selectedChatId={selectedChatId}
@@ -280,7 +279,7 @@ export default function ChatApp({
             {selectedChat ? (
               <>
                 {/* Chat Header */}
-                <div className="p-4 border-b bg-white sticky top-0 z-10">
+                <div className="p-4 border-b bg-gradient-to-bl from-blue-50 to-indigo-100 sticky top-0 z-10">
                   <div className="flex items-center space-x-3 justify-between">
                     <div className="flex items-center space-x-3">
                       {selectedChat.type === "group" ? (
@@ -328,12 +327,12 @@ export default function ChatApp({
                 </div>
 
                 {/* Messages */}
-                <div className="flex-1 overflow-y-auto">
+                <div className="flex-1 overflow-y-auto scrollbar-hide bg-gradient-to-t from-blue-100 to-indigo-200">
                   <MessageList messages={messages} currentUserId={user.id} />
                 </div>
 
                 {/* Message Input */}
-                <div className="sticky bottom-0 z-10 bg-white">
+                <div className="sticky bottom-0 z-10 ">
                   <MessageInput
                     onSendMessage={handleSendMessage}
                     onTyping={handleTyping}

@@ -50,7 +50,7 @@ export default function ChatList({
   };
 
   return (
-    <Card className="h-full">
+    <Card className="h-full bg-transparent rounded-none">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg">Chats</CardTitle>

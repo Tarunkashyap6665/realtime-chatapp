@@ -1,3 +1,4 @@
+"use server";
 import type { OTPEntry } from "./models";
 import { encrypt } from "./utils";
 import { cookies } from "next/headers";
