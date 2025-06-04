@@ -20,11 +20,11 @@ export async function sendOTPEmail(
       html: `
         <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 32px;">
           <div style="text-align: center; margin-bottom: 32px;">
-            <div style="background-color: #2563eb; width: 64px; height: 64px; border-radius: 16px; margin: 0 auto;">
-              <img src=${
+            
+              <img src="${
                 process.env.APP_URL || "http://localhost:3000"
-              }/logo.png alt="Chat Icon" style="width: 32px; height: 32px; margin: 16px;" />
-            </div>
+              }/sq_logo.png" alt="Chat Icon" style="width: 64px; height: 64px;" />
+           
             <h1 style="color: #1f2937; font-size: 24px; margin: 16px 0 8px;">Welcome to ChatApp</h1>
             <p style="color: #6b7280; font-size: 16px; margin: 0;">Use the code below to log in to your account</p>
           </div>
