@@ -20,7 +20,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { X, Search, Loader2 } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { X, Search, Loader2, AlertTriangle } from "lucide-react";
 
 interface User {
   id: string;
@@ -35,9 +36,8 @@ interface CreateChatDialogProps {
     name: string,
     type: "personal" | "group",
     participants: string[]
-  ) => void;
+  ) => Promise<void>;
   token: string;
-  currentUserId: string;
 }
 
 export default function CreateChatDialog({
@@ -45,7 +45,6 @@ export default function CreateChatDialog({
   onClose,
   onCreateChat,
   token,
-  currentUserId,
 }: CreateChatDialogProps) {
   const [chatName, setChatName] = useState("");
   const [chatType, setChatType] = useState<"personal" | "group">("personal");
@@ -54,6 +53,7 @@ export default function CreateChatDialog({
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [searching, setSearching] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (searchTerm.trim()) {
@@ -100,8 +100,10 @@ export default function CreateChatDialog({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
 
     if (chatType === "personal" && selectedUsers.length !== 1) {
+      setError("Please select exactly one user for a personal chat");
       return;
     }
 
@@ -109,26 +111,39 @@ export default function CreateChatDialog({
       chatType === "group" &&
       (!chatName.trim() || selectedUsers.length < 1)
     ) {
+      setError("Please enter a group name and select at least one participant");
       return;
     }
 
     setLoading(true);
 
-    const name =
-      chatType === "personal" ? selectedUsers[0].name : chatName.trim();
+    try {
+      const name =
+        chatType === "personal" ? selectedUsers[0].name : chatName.trim();
+      const participants = selectedUsers.map((u) => u.id);
 
-    const participants = selectedUsers.map((u) => u.id);
+      await onCreateChat(name, chatType, participants);
 
-    onCreateChat(name, chatType, participants);
-
-    // Reset form
-    setChatName("");
-    setChatType("personal");
-    setSelectedUsers([]);
-    setSearchTerm("");
-    setSearchResults([]);
-    setLoading(false);
-    onClose();
+      // Reset form
+      setChatName("");
+      setChatType("personal");
+      setSelectedUsers([]);
+      setSearchTerm("");
+      setSearchResults([]);
+      setError(null);
+      onClose();
+    } catch (error: any) {
+      // Handle specific error for duplicate group names
+      if (error.message?.includes("group chat with this name already exists")) {
+        setError(
+          "A group chat with this name already exists. Please choose a different name."
+        );
+      } else {
+        setError(error.message || "Failed to create chat");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   const resetForm = () => {
@@ -137,6 +152,7 @@ export default function CreateChatDialog({
     setSelectedUsers([]);
     setSearchTerm("");
     setSearchResults([]);
+    setError(null);
   };
 
   return (
@@ -149,12 +165,23 @@ export default function CreateChatDialog({
         }
       }}
     >
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md" aria-describedby={undefined}>
         <DialogHeader>
           <DialogTitle>Create New Chat</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Error Alert */}
+          {error && (
+            <Alert className="border-red-200 bg-red-50">
+              <AlertTriangle className="h-4 w-4 text-red-600" />
+              <AlertDescription className="text-red-800">
+                {error}
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {/* Chat Type Selection */}
           <div>
             <Label htmlFor="chat-type">Chat Type</Label>
             <Select
@@ -173,6 +200,7 @@ export default function CreateChatDialog({
             </Select>
           </div>
 
+          {/* Group Name Input */}
           {chatType === "group" && (
             <div>
               <Label htmlFor="chat-name">Group Name</Label>
@@ -182,10 +210,15 @@ export default function CreateChatDialog({
                 onChange={(e) => setChatName(e.target.value)}
                 placeholder="Enter group name"
                 required
+                maxLength={50}
               />
+              <p className="text-xs text-gray-500 mt-1">
+                {chatName.length}/50 characters
+              </p>
             </div>
           )}
 
+          {/* User Search */}
           <div>
             <Label htmlFor="user-search">
               {chatType === "personal" ? "Find User" : "Add Participants"}
@@ -205,24 +238,24 @@ export default function CreateChatDialog({
               )}
             </div>
 
+            {/* Search Results */}
             {searchResults.length > 0 && (
               <div className="mt-2 border rounded-md max-h-32 overflow-y-auto">
-                {searchResults
-                  .filter((user) => user.id != currentUserId)
-                  .map((user) => (
-                    <div
-                      key={user.id}
-                      onClick={() => addUser(user)}
-                      className="p-2 hover:bg-gray-50 cursor-pointer border-b last:border-b-0"
-                    >
-                      <div className="font-medium text-sm">{user.name}</div>
-                      <div className="text-xs text-gray-600">{user.email}</div>
-                    </div>
-                  ))}
+                {searchResults.map((user) => (
+                  <div
+                    key={user.id}
+                    onClick={() => addUser(user)}
+                    className="p-2 hover:bg-gray-50 cursor-pointer border-b last:border-b-0"
+                  >
+                    <div className="font-medium text-sm">{user.name}</div>
+                    <div className="text-xs text-gray-600">{user.email}</div>
+                  </div>
+                ))}
               </div>
             )}
           </div>
 
+          {/* Selected Users */}
           {selectedUsers.length > 0 && (
             <div>
               <Label>Selected Users</Label>
@@ -244,6 +277,7 @@ export default function CreateChatDialog({
             </div>
           )}
 
+          {/* Action Buttons */}
           <div className="flex justify-end space-x-2 pt-4">
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel

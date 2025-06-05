@@ -1,4 +1,5 @@
 import ChatUI from "@/components/chat/chat-ui";
+import { StorageProvider } from "@/contexts/storage-context";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -23,7 +24,11 @@ export const metadata: Metadata = {
 import React from "react";
 
 const ChatPage = () => {
-  return <ChatUI />;
+  return (
+    <StorageProvider>
+      <ChatUI />
+    </StorageProvider>
+  );
 };
 
 export default ChatPage;

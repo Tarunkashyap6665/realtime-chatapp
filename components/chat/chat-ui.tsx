@@ -86,7 +86,7 @@ export default function ChatUI() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="h-screen"
+      className="h-screen bg-transparent"
     >
       <ChatApp user={user} token={token} />
     </motion.div>
