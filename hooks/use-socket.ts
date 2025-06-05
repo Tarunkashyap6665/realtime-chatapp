@@ -34,7 +34,7 @@ export function useSocket(token: string | null) {
       process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:3000",
       {
         auth: { token },
-        withCredentials: true,
+        transports: ["polling"],
         reconnection: true,
         reconnectionAttempts: 5,
         reconnectionDelay: 1000,
