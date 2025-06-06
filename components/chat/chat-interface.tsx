@@ -663,69 +663,7 @@ export default function ChatInterface({ user, token }: ChatInterfaceProps) {
                   className="p-4 border-b bg-gradient-to-bl from-blue-50 to-indigo-100 sticky top-0 z-10 shadow-lg"
                 >
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      {selectedChat.type === "group" ? (
-                        <Users className="w-6 h-6 text-gray-500" />
-                      ) : (
-                        <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
-                          <span className="text-white text-xs font-medium">
-                            {selectedChat.name.charAt(0).toUpperCase()}
-                          </span>
-                        </div>
-                      )}
-                      <div>
-                        <h2 className="font-semibold">
-                          {selectedChat.type === "group"
-                            ? selectedChat.name
-                            : selectedChat.participantDetails?.[0].name}
-                        </h2>
-                        <div className="flex items-center space-x-2">
-                          <Badge
-                            variant={
-                              selectedChat.type === "group"
-                                ? "default"
-                                : "secondary"
-                            }
-                          >
-                            {selectedChat.type}
-                          </Badge>
-                          {!isPersistent && (
-                            <Badge
-                              variant="outline"
-                              className="text-orange-600 border-orange-600"
-                            >
-                              Temporary
-                            </Badge>
-                          )}
-                          {typingUsers.size > 0 && (
-                            <span className="text-xs text-gray-500">
-                              {typingUsers.size === 1
-                                ? `${(() => {
-                                    const typingUserId = typingUsers
-                                      .values()
-                                      .next().value;
-                                    return typingUserId &&
-                                      typingUserName &&
-                                      typingUserName[typingUserId]
-                                      ? typingUserName[typingUserId]
-                                      : "Someone";
-                                  })()} is typing...`
-                                : `${typingUsers.size} people are typing...`}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center space-x-2">
-                      <span className="text-xs text-gray-400 hidden md:block">
-                        {socketError
-                          ? `Error: ${socketError}`
-                          : connected
-                          ? "Connected"
-                          : "Connecting..."}
-                      </span>
-
+                    <div className="flex items-center space-x-1">
                       {/* Group Actions */}
                       {selectedChat.type === "group" && (
                         <DropdownMenu>
@@ -734,7 +672,7 @@ export default function ChatInterface({ user, token }: ChatInterfaceProps) {
                               <MoreVertical className="w-4 h-4" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
+                          <DropdownMenuContent align="start" className="mt-1.5">
                             <DropdownMenuItem
                               onClick={() => setShowGroupInfo(true)}
                             >
@@ -750,6 +688,69 @@ export default function ChatInterface({ user, token }: ChatInterfaceProps) {
                           </DropdownMenuContent>
                         </DropdownMenu>
                       )}
+                      <div className="flex items-center space-x-3">
+                        {selectedChat.type === "group" ? (
+                          <Users className="w-6 h-6 text-gray-500" />
+                        ) : (
+                          <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
+                            <span className="text-white text-xs font-medium">
+                              {selectedChat.name.charAt(0).toUpperCase()}
+                            </span>
+                          </div>
+                        )}
+                        <div>
+                          <h2 className="font-semibold">
+                            {selectedChat.type === "group"
+                              ? selectedChat.name
+                              : selectedChat.participantDetails?.[0].name}
+                          </h2>
+                          <div className="flex items-center space-x-2">
+                            <Badge
+                              variant={
+                                selectedChat.type === "group"
+                                  ? "default"
+                                  : "secondary"
+                              }
+                            >
+                              {selectedChat.type}
+                            </Badge>
+                            {!isPersistent && (
+                              <Badge
+                                variant="outline"
+                                className="text-orange-600 border-orange-600"
+                              >
+                                Temporary
+                              </Badge>
+                            )}
+                            {typingUsers.size > 0 && (
+                              <span className="text-xs text-gray-500">
+                                {typingUsers.size === 1
+                                  ? `${(() => {
+                                      const typingUserId = typingUsers
+                                        .values()
+                                        .next().value;
+                                      return typingUserId &&
+                                        typingUserName &&
+                                        typingUserName[typingUserId]
+                                        ? typingUserName[typingUserId]
+                                        : "Someone";
+                                    })()} is typing...`
+                                  : `${typingUsers.size} people are typing...`}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <span className="text-xs text-gray-400 hidden md:block">
+                        {socketError
+                          ? `Error: ${socketError}`
+                          : connected
+                          ? "Connected"
+                          : "Connecting..."}
+                      </span>
                     </div>
                     <SidebarTrigger className="md:hidden" />
                   </div>
