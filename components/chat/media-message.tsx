@@ -21,14 +21,9 @@ import {
 } from "lucide-react";
 import { formatFileSize, formatDuration } from "@/lib/file-upload";
 import type { Message } from "@/lib/models";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogTrigger,
-} from "../ui/dialog";
+import { Dialog, DialogContent } from "../ui/dialog";
 import { DialogTitle } from "@radix-ui/react-dialog";
-
+import { constructDownloadUrl } from "@/lib/utils";
 interface MediaMessageProps {
   message: Message;
   isOwnMessage: boolean;
@@ -42,7 +37,6 @@ export default function MediaMessage({
   const [showPreview, setShowPreview] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -92,16 +86,12 @@ export default function MediaMessage({
   const handleDownload = async () => {
     if (message.mediaUrl) {
       try {
-        const response = await fetch(message.mediaUrl);
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
         const link = document.createElement("a");
-        link.href = url;
+        link.href = constructDownloadUrl(message.fileId || "");
         link.download = message.mediaName || "download";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
       } catch (error) {
         console.error("Download failed:", error);
       }
@@ -270,7 +260,7 @@ export default function MediaMessage({
           <div className="flex items-center space-x-2 text-xs text-gray-500">
             <span>
               {formatDuration(currentTime)} /{" "}
-              {formatDuration(duration || message.mediaDuration || 0)}
+              {formatDuration(message.mediaDuration || 0)}
             </span>
             <span>•</span>
             <span>{formatFileSize(message.mediaSize || 0)}</span>
@@ -314,16 +304,16 @@ export default function MediaMessage({
         <input
           type="range"
           min="0"
-          max={duration || message.mediaDuration || 0}
+          max={message.mediaDuration || 0}
           value={currentTime}
           onChange={handleSeek}
           className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
           disabled={isLoading || !!error}
           style={{
             background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${
-              (currentTime / (duration || message.mediaDuration || 1)) * 100
+              (currentTime / (message.mediaDuration || 1)) * 100
             }%, #e5e7eb ${
-              (currentTime / (duration || message.mediaDuration || 1)) * 100
+              (currentTime / (message.mediaDuration || 1)) * 100
             }%, #e5e7eb 100%)`,
           }}
         />
@@ -387,9 +377,9 @@ export default function MediaMessage({
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
       />
-      {(duration || message.mediaDuration) && (
+      {message.mediaDuration && (
         <div className="absolute bottom-2 left-2 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded">
-          {formatDuration(duration || message.mediaDuration || 0)}
+          {formatDuration(message.mediaDuration || 0)}
         </div>
       )}
       <Button

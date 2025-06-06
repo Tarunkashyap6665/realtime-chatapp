@@ -323,6 +323,7 @@ export default function ChatInterface({ user, token }: ChatInterfaceProps) {
           messageData.mediaUrl = mediaData.url;
           messageData.mediaName = mediaData.name;
           messageData.mediaSize = mediaData.size;
+          messageData.fileId = mediaData.fileId;
           if (mediaData.duration)
             messageData.mediaDuration = mediaData.duration;
           if (mediaData.thumbnail)
@@ -674,7 +675,11 @@ export default function ChatInterface({ user, token }: ChatInterfaceProps) {
                         </div>
                       )}
                       <div>
-                        <h2 className="font-semibold">{selectedChat.name}</h2>
+                        <h2 className="font-semibold">
+                          {selectedChat.type === "group"
+                            ? selectedChat.name
+                            : selectedChat.participantDetails?.[0].name}
+                        </h2>
                         <div className="flex items-center space-x-2">
                           <Badge
                             variant={
@@ -821,7 +826,7 @@ export default function ChatInterface({ user, token }: ChatInterfaceProps) {
                       </CardHeader>
                       <CardContent className="text-center space-y-3">
                         <Button
-                          className="bg-green-600"
+                          className="bg-green-600 hover:bg-green-600/90"
                           onClick={() => setShowCreateChat(true)}
                         >
                           Start New Chat

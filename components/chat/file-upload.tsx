@@ -120,6 +120,7 @@ export default function FileUpload({
       const finalMediaData = {
         ...mediaData,
         url: uploadResult.url,
+        fileId: uploadResult.fileId,
       };
 
       onFileSelect(selectedFile, finalMediaData, caption);

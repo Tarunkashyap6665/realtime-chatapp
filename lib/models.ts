@@ -22,6 +22,7 @@ export interface Message {
   mediaDuration?: number; // for audio/video
   thumbnailUrl?: string; // for video
   isTemporary?: boolean;
+  fileId?: string;
 }
 
 export interface Chat {

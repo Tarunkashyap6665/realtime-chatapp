@@ -124,6 +124,7 @@ export default function MessageInput({
         name: audioFile.name,
         size: audioFile.size,
         duration: duration,
+        fileId: uploadResult.fileId,
       };
 
       // Send the audio message

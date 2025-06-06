@@ -23,7 +23,7 @@ export async function sendOTPEmail(
             
               <img src="${
                 process.env.APP_URL || "http://localhost:3000"
-              }/sq_logo.png" alt="Chat Icon" style="width: 64px; height: 64px;" />
+              }/email_logo.png" alt="Chat Icon" style="width: 64px; height: 64px;" />
            
             <h1 style="color: #1f2937; font-size: 24px; margin: 16px 0 8px;">Welcome to ChatApp</h1>
             <p style="color: #6b7280; font-size: 16px; margin: 0;">Use the code below to log in to your account</p>

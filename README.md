@@ -8,9 +8,11 @@ ChatApp is a modern real-time communication platform built with cutting-edge tec
 
 - **Real-time Messaging**: Instant message delivery with live typing indicators
 - **Group Chats**: Create and manage group conversations
+- **Multimedia Messaging**: Support for images, videos, audio messages, and file sharing
+- **Audio Recording**: In-app voice message recording with pause/resume capability
+- **Presence System**: Real-time online/offline status with last seen timestamps
 - **Secure Authentication**: Email-based OTP verification system
 - **Modern UI/UX**: Responsive design with smooth animations
-- **Real-time Updates**: Instant message delivery and typing indicators
 
 ## Tech Stack
 
@@ -22,7 +24,7 @@ ChatApp is a modern real-time communication platform built with cutting-edge tec
 - **Socket.io Client**: Real-time bidirectional event-based communication
 - **React Hook Form**: Performant, flexible and extensible forms
 - **Lucide React**: Beautiful and consistent icons
-- **Radix UI**: Unstyled, accessible components for building high‑quality design systems
+- **Shadcn/ui**: Pre-built components based on Radix UI, offering accessible and customizable UI elements
 
 ### Backend
 
@@ -35,6 +37,7 @@ ChatApp is a modern real-time communication platform built with cutting-edge tec
 
 ### Development Tools
 
+- **VS Code IDE**: Integrated development environment with TypeScript support
 - **TypeScript**: For type-safe code
 - **ESLint**: Code linting
 - **Prettier**: Code formatting
@@ -88,8 +91,10 @@ npm run dev
 
 - Instant message delivery
 - Live typing indicators
-- Online/offline status
+- Enhanced presence system with online/offline status
+- Last seen timestamps for offline users
 - Message delivery status
+- Real-time multimedia message support
 
 ### Authentication & Security
 
@@ -103,6 +108,9 @@ npm run dev
 - Smooth animations with Framer Motion
 - Intuitive user interface
 - Modern and clean design
+- Rich media handling with preview
+- Voice message recording interface
+- Interactive multimedia playback controls
 
 <!-- ## Contributing
 

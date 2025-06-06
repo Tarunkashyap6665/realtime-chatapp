@@ -150,7 +150,11 @@ export default function ChatList({
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg">Chats</CardTitle>
           <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-            <Button size="sm" className="bg-green-600" onClick={onCreateChat}>
+            <Button
+              size="sm"
+              className="bg-green-600 hover:bg-green-600/90"
+              onClick={onCreateChat}
+            >
               <Plus className="w-4 h-4" />
             </Button>
           </motion.div>

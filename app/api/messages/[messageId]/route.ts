@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "@/lib/jwt";
 import { getDatabase } from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
+import { deleteMultimedia } from "@/lib/actions/storage.actions";
 
 export async function DELETE(
   request: NextRequest,
@@ -34,6 +35,10 @@ export async function DELETE(
         { error: "Message not found or access denied" },
         { status: 404 }
       );
+    }
+
+    if (message.type != "text") {
+      await deleteMultimedia(message.fileId);
     }
 
     // Update message content to indicate deletion
