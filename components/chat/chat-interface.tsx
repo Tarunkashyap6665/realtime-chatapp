@@ -664,7 +664,6 @@ export default function ChatInterface({ user, token }: ChatInterfaceProps) {
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
-                      <SidebarTrigger className="mr-2 md:hidden" />
                       {selectedChat.type === "group" ? (
                         <Users className="w-6 h-6 text-gray-500" />
                       ) : (
@@ -752,6 +751,7 @@ export default function ChatInterface({ user, token }: ChatInterfaceProps) {
                         </DropdownMenu>
                       )}
                     </div>
+                    <SidebarTrigger className="md:hidden" />
                   </div>
                 </motion.div>
                 {/* Storage Mode Alert */}
