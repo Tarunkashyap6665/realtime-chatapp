@@ -718,7 +718,7 @@ export default function ChatInterface({ user, token }: ChatInterfaceProps) {
                     </div>
 
                     <div className="flex items-center space-x-2">
-                      <span className="text-xs text-gray-400 hidden sm:block">
+                      <span className="text-xs text-gray-400 hidden md:block">
                         {socketError
                           ? `Error: ${socketError}`
                           : connected
